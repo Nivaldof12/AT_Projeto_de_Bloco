@@ -1,0 +1,14 @@
+import socket
+
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+server_address = ('0.0.0.0', 12345)
+server_socket.bind(server_address)
+
+print("Servidor UDP rodando na porta 12345...")
+
+while True:
+    data, client_address = server_socket.recvfrom(1024)
+    print(f"Mensagem recebida de {client_address}: {data.decode()}")
+
+    server_socket.sendto(b"ack", client_address)

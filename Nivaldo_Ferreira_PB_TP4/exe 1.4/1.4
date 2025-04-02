@@ -1,0 +1,15 @@
+import heapq
+
+def remover_raiz(heap):
+    if heap:
+        return heapq.heappop(heap)
+    return None
+
+if __name__ == "__main__":
+    heap = [1, 3, 5, 10, 8, 7]
+    heapq.heapify(heap)
+
+    print("Heap antes da remoção:", heap)
+    removido = remover_raiz(heap)
+    print(f"Elemento removido: {removido}")
+    print("Heap depois da remoção:", heap)

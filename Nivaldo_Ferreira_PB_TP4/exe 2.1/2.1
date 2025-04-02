@@ -1,0 +1,34 @@
+class TrieNode:
+    def __init__(self):
+        self.filhos = {}
+        self.fim_da_palavra = False
+
+class Trie:
+    def __init__(self):
+        self.raiz = TrieNode()
+
+    def inserir(self, palavra):
+        no = self.raiz
+        for char in palavra:
+            if char not in no.filhos:
+                no.filhos[char] = TrieNode()
+            no = no.filhos[char]
+        no.fim_da_palavra = True
+
+    def exibir(self, no=None, prefixo=""):
+        if no is None:
+            no = self.raiz
+        if no.fim_da_palavra:
+            print(prefixo)
+        for char, filho in no.filhos.items():
+            self.exibir(filho, prefixo + char)
+
+if __name__ == "__main__":
+    trie = Trie()
+    palavras = ["python", "linux", "fedora", "vi", "script"]
+    
+    for palavra in palavras:
+        trie.inserir(palavra)
+
+    print("Palavras na Trie:")
+    trie.exibir()

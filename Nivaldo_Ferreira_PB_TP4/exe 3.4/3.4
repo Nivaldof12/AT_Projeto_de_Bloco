@@ -1,0 +1,27 @@
+from collections import deque
+
+def encontrar_caminho(grafo, inicio, destino):
+    fila = deque([(inicio, [inicio])])
+    visitados = set()
+
+    while fila:
+        no, caminho = fila.popleft()
+        if no == destino:
+            return caminho
+        if no not in visitados:
+            visitados.add(no)
+            for vizinho in grafo.get(no, []):
+                if vizinho not in visitados:
+                    fila.append((vizinho, caminho + [vizinho]))
+    
+    return None
+
+grafo = {
+    "A": ["B", "C"],
+    "B": ["A", "D"],
+    "C": ["A", "D"],
+    "D": ["B", "C", "E"],
+    "E": ["D"]
+}
+caminho = encontrar_caminho(grafo, "A", "E")
+print("Caminho encontrado:", caminho if caminho else "Nenhum caminho encontrado")

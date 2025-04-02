@@ -1,0 +1,52 @@
+class TrieNode:
+    def __init__(self):
+        self.filhos = {}
+        self.fim_da_palavra = False
+
+class Trie:
+    def __init__(self):
+        self.raiz = TrieNode()
+
+    def inserir(self, palavra):
+        no = self.raiz
+        for char in palavra:
+            if char not in no.filhos:
+                no.filhos[char] = TrieNode()
+            no = no.filhos[char]
+        no.fim_da_palavra = True
+
+    def buscar(self, palavra):
+        no = self.raiz
+        for char in palavra:
+            if char not in no.filhos:
+                return False
+            no = no.filhos[char]
+        return no.fim_da_palavra
+
+    def autocomplete(self, prefixo):
+        no = self.raiz
+        palavras = []
+
+        for char in prefixo:
+            if char not in no.filhos:
+                return palavras
+            no = no.filhos[char]
+
+        self._buscar_palavras(no, prefixo, palavras)
+        return palavras
+
+    def _buscar_palavras(self, no, prefixo, palavras):
+        if no.fim_da_palavra:
+            palavras.append(prefixo)
+        for char, filho in no.filhos.items():
+            self._buscar_palavras(filho, prefixo + char, palavras)
+
+if __name__ == "__main__":
+    trie = Trie()
+    palavras = ["python", "linux", "fedora", "vi", "script", "viva", "vista"]
+    
+    for palavra in palavras:
+        trie.inserir(palavra)
+
+    print("Autocomplete para 'vi':", trie.autocomplete("vi"))
+    print("Autocomplete para 'li':", trie.autocomplete("li"))

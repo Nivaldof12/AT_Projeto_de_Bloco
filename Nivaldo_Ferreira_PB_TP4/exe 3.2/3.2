@@ -1,0 +1,22 @@
+def dfs(grafo, inicio):
+    visitados = set()
+    ordem_visita = []
+    
+    def visitar(no):
+        if no not in visitados:
+            visitados.add(no)
+            ordem_visita.append(no)
+            for vizinho in grafo.get(no, []):
+                visitar(vizinho)
+    
+    visitar(inicio)
+    return ordem_visita
+
+grafo = {
+    "A": ["B", "C"],
+    "B": ["D"],
+    "C": ["D"],
+    "D": []
+}
+ordem = dfs(grafo, "A")
+print("Ordem de visita:", ordem)

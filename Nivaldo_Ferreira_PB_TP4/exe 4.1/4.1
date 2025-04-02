@@ -1,0 +1,16 @@
+import socket
+
+HOST = '0.0.0.0'
+PORT = 12345
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind((HOST, PORT))
+server.listen(1)
+
+print(f"Servidor iniciado na porta {PORT}...")
+
+while True:
+    conn, addr = server.accept()
+    print(f"Conexão recebida de {addr}")
+    conn.sendall(b"Bem-vindo ao servidor TCP!\n")
+    conn.close()

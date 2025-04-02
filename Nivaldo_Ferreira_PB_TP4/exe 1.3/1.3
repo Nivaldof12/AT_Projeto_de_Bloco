@@ -1,0 +1,14 @@
+import heapq
+
+def buscar_na_heap(heap, elemento):
+    return elemento in heap
+
+if __name__ == "__main__":
+    heap = [1, 3, 5, 10, 8, 7]
+    heapq.heapify(heap)
+
+    valor = 5
+    print(f"Elemento {valor} está na heap?", buscar_na_heap(heap, valor))
+
+    valor = 4
+    print(f"Elemento {valor} está na heap?", buscar_na_heap(heap, valor))

@@ -1,0 +1,12 @@
+import heapq
+
+def inserir_na_heap(heap, elemento):
+    heapq.heappush(heap, elemento)
+
+if __name__ == "__main__":
+    heap = [1, 3, 5, 10, 8, 7]
+    heapq.heapify(heap)
+
+    print("Heap antes da inserção:", heap)
+    inserir_na_heap(heap, 4)
+    print("Heap depois da inserção:", heap)

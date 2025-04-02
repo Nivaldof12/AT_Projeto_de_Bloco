@@ -1,0 +1,13 @@
+import heapq
+
+def criar_heap(lista):
+    heapq.heapify(lista)
+    return lista
+
+def exibir_heap(heap):
+    return heap
+
+if __name__ == "__main__":
+    numeros = [10, 3, 5, 1, 8, 7]
+    heap = criar_heap(numeros)
+    print("Heap criada:", exibir_heap(heap))
