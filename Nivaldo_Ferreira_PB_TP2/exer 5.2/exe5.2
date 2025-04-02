@@ -1,0 +1,37 @@
+class TreeNode:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+
+def parallel_search(root, target):
+    from multiprocessing import Process, Value
+
+    def search_subtree(node, target, found):
+        if node is None or found.value:
+            return
+        if node.value == target:
+            found.value = True
+            return
+        search_subtree(node.left, target, found)
+        search_subtree(node.right, target, found)
+
+    found = Value('b', False)
+
+    left_proc = Process(target=search_subtree, args=(root.left, target, found))
+    right_proc = Process(target=search_subtree, args=(root.right, target, found))
+
+    left_proc.start()
+    right_proc.start()
+    left_proc.join()
+    right_proc.join()
+
+    return found.value
+
+root = TreeNode(10)
+root.left = TreeNode(5)
+root.right = TreeNode(15)
+root.left.left = TreeNode(3)
+root.left.right = TreeNode(7)
+
+print(f"Valor encontrado: {parallel_search(root, 7)}")

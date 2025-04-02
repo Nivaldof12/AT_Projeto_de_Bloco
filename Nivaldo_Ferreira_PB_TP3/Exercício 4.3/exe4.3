@@ -1,0 +1,47 @@
+import ipaddress
+
+def ipv6_to_binary(ipv6):
+    # Expandir o IPv6, para tratar o "::" que representa uma sequência de zeros
+    expanded_ipv6 = ipaddress.IPv6Address(ipv6).exploded
+    return ''.join(f'{int(part, 16):016b}' for part in expanded_ipv6.split(':'))
+
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.prefix = None
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, prefix):
+        network = ipaddress.ip_network(prefix, strict=False)
+        binary_network = ipv6_to_binary(str(network.network_address))[:int(network.prefixlen)]
+        node = self.root
+        for bit in binary_network:
+            if bit not in node.children:
+                node.children[bit] = TrieNode()
+            node = node.children[bit]
+        node.prefix = prefix
+        
+    def longest_prefix_match(self, ip):
+        binary_ip = ipv6_to_binary(ip)
+        node = self.root
+        longest_match = None
+        for bit in binary_ip:
+            if bit in node.children:
+                node = node.children[bit]
+                if node.prefix:
+                    longest_match = node.prefix
+            else:
+                break
+        return longest_match
+
+trie = Trie()
+prefixos = ["2001:db8::/32", "2001:db8:1234::/48"]
+for prefix in prefixos:
+    trie.insert(prefix)
+
+ip = "2001:db8:1234:5678::1"
+resultado = trie.longest_prefix_match(ip)
+print(f"O longest prefix match para o IP {ip} é: {resultado}")

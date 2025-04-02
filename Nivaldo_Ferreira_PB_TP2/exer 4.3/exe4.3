@@ -1,0 +1,9 @@
+def torres_de_hanoi(n, origem, destino, auxiliar):
+    if n == 1:
+        print(f"Mova o disco 1 da torre {origem} para a torre {destino}")
+        return
+    torres_de_hanoi(n - 1, origem, auxiliar, destino)
+    print(f"Mova o disco {n} da torre {origem} para a torre {destino}")
+    torres_de_hanoi(n - 1, auxiliar, destino, origem)
+
+torres_de_hanoi(3, 'A', 'C', 'B')

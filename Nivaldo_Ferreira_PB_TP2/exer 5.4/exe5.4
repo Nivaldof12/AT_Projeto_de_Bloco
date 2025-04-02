@@ -1,0 +1,16 @@
+from multiprocessing import Pool
+
+def find_max(sublist):
+    return max(sublist)
+
+def parallel_max(lst):
+    with Pool() as pool:
+        chunk_size = len(lst) // 4
+        chunks = [lst[i:i + chunk_size] for i in range(0, len(lst), chunk_size)]
+        max_values = pool.map(find_max, chunks)
+
+    return max(max_values)
+
+large_list = [1, 3, 5, 2, 8, 6, 7, 10, 4, 9]
+max_value = parallel_max(large_list)
+print(f"Máximo paralelamente: {max_value}")

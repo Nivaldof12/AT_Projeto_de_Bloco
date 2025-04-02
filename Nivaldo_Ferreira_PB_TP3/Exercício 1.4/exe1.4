@@ -1,0 +1,42 @@
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+
+class BST:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, key):
+        self.root = self._insert_rec(self.root, key)
+
+    def _insert_rec(self, node, key):
+        if node is None:
+            return Node(key)
+        if key < node.key:
+            node.left = self._insert_rec(node.left, key)
+        else:
+            node.right = self._insert_rec(node.right, key)
+        return node
+
+    def is_valid_bst(self):
+        return self._is_valid_bst(self.root, float('-inf'), float('inf'))
+
+    def _is_valid_bst(self, node, min_val, max_val):
+        if node is None:
+            return True
+        if not (min_val < node.key < max_val):
+            return False
+        return (self._is_valid_bst(node.left, min_val, node.key) and
+                self._is_valid_bst(node.right, node.key, max_val))
+
+bst = BST()
+for value in [50, 30, 70, 20, 40, 60, 80]:
+    bst.insert(value)
+
+print("A árvore é uma BST válida?" , bst.is_valid_bst())
+
+bst.root.left.right.key = 100
+
+print("A árvore ainda é uma BST válida?" , bst.is_valid_bst())

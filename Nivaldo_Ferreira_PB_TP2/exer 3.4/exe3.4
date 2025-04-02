@@ -1,0 +1,94 @@
+class DNode:
+    def __init__(self, valor):
+        self.valor = valor
+        self.proximo = None
+        self.anterior = None
+
+class DoublyLinkedList:
+    def __init__(self):
+        self.head = None
+
+    def inserir_no_inicio(self, valor):
+        novo_no = DNode(valor)
+        if not self.head:
+            self.head = novo_no
+        else:
+            novo_no.proximo = self.head
+            self.head.anterior = novo_no
+            self.head = novo_no
+
+    def inserir_no_fim(self, valor):
+        novo_no = DNode(valor)
+        if not self.head:
+            self.head = novo_no
+        else:
+            atual = self.head
+            while atual.proximo:
+                atual = atual.proximo
+            atual.proximo = novo_no
+            novo_no.anterior = atual
+
+    def ordenar_lista(self):
+        if not self.head:
+            return
+        trocou = True
+        while trocou:
+            trocou = False
+            atual = self.head
+            while atual.proximo:
+                if atual.valor > atual.proximo.valor:
+                    # Troca os valores
+                    atual.valor, atual.proximo.valor = atual.proximo.valor, atual.valor
+                    trocou = True
+                atual = atual.proximo
+
+    def mesclar_listas(self, outra_lista):
+        lista_mesclada = DoublyLinkedList()
+        atual1 = self.head
+        atual2 = outra_lista.head
+
+        while atual1 and atual2:
+            if atual1.valor < atual2.valor:
+                lista_mesclada.inserir_no_fim(atual1.valor)
+                atual1 = atual1.proximo
+            else:
+                lista_mesclada.inserir_no_fim(atual2.valor)
+                atual2 = atual2.proximo
+
+        while atual1:
+            lista_mesclada.inserir_no_fim(atual1.valor)
+            atual1 = atual1.proximo
+
+        while atual2:
+            lista_mesclada.inserir_no_fim(atual2.valor)
+            atual2 = atual2.proximo
+
+        return lista_mesclada
+
+    def exibir_lista(self):
+        atual = self.head
+        elementos = []
+        while atual:
+            elementos.append(atual.valor)
+            atual = atual.proximo
+        print("Lista:", elementos)
+
+lista1 = DoublyLinkedList()
+lista1.inserir_no_fim(30)
+lista1.inserir_no_fim(10)
+lista1.inserir_no_fim(20)
+print("Lista 1 antes de ordenar:")
+lista1.exibir_lista()
+
+lista1.ordenar_lista()
+print("Lista 1 após ordenar:")
+lista1.exibir_lista()
+
+lista2 = DoublyLinkedList()
+lista2.inserir_no_fim(15)
+lista2.inserir_no_fim(25)
+lista2.inserir_no_fim(35)
+
+lista_mesclada = lista1.mesclar_listas(lista2)
+print("Lista mesclada:")
+lista_mesclada.exibir_lista()

@@ -1,0 +1,59 @@
+import ipaddress
+import time
+
+def ipv4_to_binary(ip):
+    return ''.join(f'{int(part):08b}' for part in str(ip).split('.'))
+
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.prefix = None
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, prefix):
+        network = ipaddress.ip_network(prefix, strict=False)
+        binary_network = ipv4_to_binary(str(network.network_address))[:int(network.prefixlen)]
+        node = self.root
+        for bit in binary_network:
+            if bit not in node.children:
+                node.children[bit] = TrieNode()
+            node = node.children[bit]
+        node.prefix = prefix
+
+    def longest_prefix_match(self, ip):
+        binary_ip = ipv4_to_binary(ip)
+        node = self.root
+        longest_match = None
+        for bit in binary_ip:
+            if bit in node.children:
+                node = node.children[bit]
+                if node.prefix:
+                    longest_match = node.prefix
+            else:
+                break
+        return longest_match
+
+prefixos = [
+    "192.168.0.0/24",
+    "192.168.1.0/24",
+    "192.168.2.0/24",
+    "192.168.3.0/24",
+    "192.168.4.0/24",
+    "192.168.5.0/24"
+]
+
+ip = ipaddress.ip_address("192.168.1.55")
+
+trie = Trie()
+for prefixo in prefixos:
+    trie.insert(prefixo)
+
+inicio_trie = time.time()
+resultado_trie = trie.longest_prefix_match(ip)
+fim_trie = time.time()
+
+print(f"Prefixo encontrado (Trie): {resultado_trie}")
+print(f"Tempo da busca com Trie: {fim_trie - inicio_trie} segundos")

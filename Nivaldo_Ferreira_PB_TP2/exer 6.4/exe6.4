@@ -1,0 +1,18 @@
+def paint_chairs(n, k):
+    if n == 0: return 0
+    if n == 1: return k
+
+    same = 0
+    diff = k
+    total = same + diff
+
+    for i in range(2, n + 1):
+        same = diff
+        diff = total * (k - 1)
+        total = same + diff
+
+    return total
+
+n = 5
+k = 3
+print(f"Maneiras de pintar as cadeiras: {paint_chairs(n, k)}")

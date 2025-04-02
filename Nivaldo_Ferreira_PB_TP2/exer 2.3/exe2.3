@@ -1,0 +1,24 @@
+import random
+
+def quickselect(lista, k):
+    if len(lista) == 1:
+        return lista[0]
+    
+    pivo = random.choice(lista)
+    menores = [x for x in lista if x < pivo]
+    iguais = [x for x in lista if x == pivo]
+    maiores = [x for x in lista if x > pivo]
+    
+    if k <= len(menores):
+        return quickselect(menores, k)
+    elif k <= len(menores) + len(iguais):
+        return pivo
+    else:
+        return quickselect(maiores, k - len(menores) - len(iguais))
+        
+for i in range(10):
+    lista = [random.randint(1, 1000) for _ in range(10000)]
+    print(f"Lista {i+1}:")
+    for k in [10, 100, 500, 1000, 5000]:
+        resultado = quickselect(lista, k)
+        print(f"O {k}-ésimo menor elemento é {resultado}")

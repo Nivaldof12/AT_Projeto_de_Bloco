@@ -1,0 +1,44 @@
+import threading
+
+class Node:
+    def __init__(self, key):
+        self.left = None
+        self.right = None
+        self.value = key
+
+def parallel_search(root, target):
+    if root is None:
+        return False
+
+    if root.value == target:
+        return True
+
+    def search_in_subtree(subtree):
+        if subtree is None:
+            return False
+        if subtree.value == target:
+            return True
+        return search_in_subtree(subtree.left) or search_in_subtree(subtree.right)
+
+    left_thread = threading.Thread(target=search_in_subtree, args=(root.left,))
+    right_thread = threading.Thread(target=search_in_subtree, args=(root.right,))
+
+    left_thread.start()
+    right_thread.start()
+
+    left_thread.join()
+    right_thread.join()
+
+    return search_in_subtree(root.left) or search_in_subtree(root.right)
+
+root = Node(50)
+root.left = Node(30)
+root.right = Node(70)
+root.left.left = Node(20)
+root.left.right = Node(40)
+root.right.left = Node(60)
+root.right.right = Node(80)
+
+target_value = 60
+found = parallel_search(root, target_value)
+print(f"Valor {target_value} encontrado: {found}")

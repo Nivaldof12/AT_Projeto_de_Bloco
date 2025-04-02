@@ -1,0 +1,18 @@
+import multiprocessing
+
+def partial_sum(numbers):
+    return sum(numbers)
+
+if __name__ == "__main__":
+    numbers = list(range(1, 10_000_001))
+    num_workers = multiprocessing.cpu_count()
+    
+    chunk_size = len(numbers) // num_workers
+    chunks = [numbers[i:i + chunk_size] for i in range(0, len(numbers), chunk_size)]
+
+    with multiprocessing.Pool(num_workers) as pool:
+        results = pool.map(partial_sum, chunks)
+
+    total_sum = sum(results)
+
+    print("Soma total:", total_sum)

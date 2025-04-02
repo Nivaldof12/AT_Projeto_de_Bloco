@@ -1,0 +1,31 @@
+import time
+
+def quicksort(lista, tipo_pivo='primeiro'):
+    if len(lista) <= 1:
+        return lista
+    
+    if tipo_pivo == 'primeiro':
+        pivo = lista[0]
+    elif tipo_pivo == 'ultimo':
+        pivo = lista[-1]
+    elif tipo_pivo == 'mediano':
+        meio = len(lista) // 2
+        pivo = sorted([lista[0], lista[meio], lista[-1]])[1]
+    else:
+        raise ValueError("Tipo de pivô inválido")
+    
+    menores = [x for x in lista if x < pivo]
+    iguais = [x for x in lista if x == pivo]
+    maiores = [x for x in lista if x > pivo]
+    
+    return quicksort(menores, tipo_pivo) + iguais + quicksort(maiores, tipo_pivo)
+
+# Testando os pivôs
+lista = [38, 27, 43, 3, 9, 82, 10]
+pivos = ['primeiro', 'ultimo', 'mediano']
+
+for tipo in pivos:
+    inicio = time.time()
+    resultado = quicksort(lista, tipo)
+    fim = time.time()
+    print(f"Pivô: {tipo}, Lista ordenada: {resultado}, Tempo: {fim - inicio:.6f} segundos")

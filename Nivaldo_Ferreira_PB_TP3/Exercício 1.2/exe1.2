@@ -1,0 +1,76 @@
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+
+class BST:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, key):
+        self.root = self._insert_rec(self.root, key)
+
+    def _insert_rec(self, node, key):
+        if node is None:
+            return Node(key)
+        if key < node.key:
+            node.left = self._insert_rec(node.left, key)
+        else:
+            node.right = self._insert_rec(node.right, key)
+        return node
+
+    def delete(self, key):
+        self.root = self._delete_rec(self.root, key)
+
+    def _delete_rec(self, node, key):
+        if node is None:
+            return node
+        
+        if key < node.key:
+            node.left = self._delete_rec(node.left, key)
+        elif key > node.key:
+            node.right = self._delete_rec(node.right, key)
+        else:
+            if node.left is None and node.right is None:
+                return None
+            elif node.left is None:
+                return node.right
+            elif node.right is None:
+                return node.left
+            else:
+                successor = self._min_value_node(node.right)
+                node.key = successor.key
+                node.right = self._delete_rec(node.right, successor.key)
+
+        return node
+
+    def _min_value_node(self, node):
+        current = node
+        while current.left:
+            current = current.left
+        return current
+
+    def inorder(self):
+        self._inorder_rec(self.root)
+        print()
+
+    def _inorder_rec(self, node):
+        if node:
+            self._inorder_rec(node.left)
+            print(node.key, end=" ")
+            self._inorder_rec(node.right)
+
+bst = BST()
+for value in [50, 30, 70, 20, 40, 60, 80]:
+    bst.insert(value)
+
+print("In-order antes da remoção:")
+bst.inorder()
+
+bst.delete(20)
+bst.delete(30)
+bst.delete(50)
+
+print("In-order depois da remoção:")
+bst.inorder()

@@ -1,0 +1,20 @@
+import ipaddress
+import time
+
+def verificar_prefixo_linear(ip, prefixos):
+    for prefixo in prefixos:
+        network = ipaddress.ip_network(prefixo, strict=False)
+        if ip in network:
+            return prefixo
+    return None
+
+prefixos = ["192.168.1.0/24", "192.168.2.0/24", "192.168.3.0/24", "192.168.4.0/24", "192.168.5.0/24"]
+
+ip = ipaddress.ip_address("192.168.1.55")
+
+inicio_linear = time.time()
+resultado_linear = verificar_prefixo_linear(ip, prefixos)
+fim_linear = time.time()
+
+print(f"Prefixo encontrado (linear): {resultado_linear}")
+print(f"Tempo da busca linear: {fim_linear - inicio_linear} segundos")

@@ -1,0 +1,40 @@
+import random
+
+def quickselect(arr, k):
+    if len(arr) == 1:
+        return arr[0]
+
+    pivot = random.choice(arr)
+
+    menores = [x for x in arr if x < pivot]
+    iguais = [x for x in arr if x == pivot]
+    maiores = [x for x in arr if x > pivot]
+
+    if k < len(menores):
+        return quickselect(menores, k)
+    elif k < len(menores) + len(iguais):
+        return pivot
+    else:
+        return quickselect(maiores, k - len(menores) - len(iguais))
+
+def encontrar_mediana(arr):
+    n = len(arr)
+    if n % 2 == 1:
+        return quickselect(arr, n // 2)
+    else:
+        menor1 = quickselect(arr, n // 2 - 1)
+        menor2 = quickselect(arr, n // 2)
+        return (menor1 + menor2) / 2
+
+def encontrar_k_menores(arr, k):
+    menores = []
+    for i in range(k):
+        menores.append(quickselect(arr, i))
+    return menores
+
+numeros = [7, 2, 1, 10, 4, 3, 6, 8]
+mediana = encontrar_mediana(numeros)
+k_menores = encontrar_k_menores(numeros, 3)
+
+print("Mediana:", mediana)
+print("3 menores elementos:", k_menores)

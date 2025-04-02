@@ -1,0 +1,21 @@
+import asyncio
+import aiohttp
+import time
+
+async def download_url(session, url):
+    async with session.get(url) as response:
+        content = await response.text()
+        print(f"Downloaded {url}: {len(content)} bytes")
+
+async def main(urls):
+    async with aiohttp.ClientSession() as session:
+        await asyncio.gather(*(download_url(session, url) for url in urls))
+
+urls = ["https://example.com", "https://httpbin.org/get", "https://jsonplaceholder.typicode.com/posts"]
+
+# Medindo tempo
+start_time = time.time()
+asyncio.run(main(urls))
+end_time = time.time()
+
+print(f"Tempo total: {end_time - start_time:.2f} segundos")
