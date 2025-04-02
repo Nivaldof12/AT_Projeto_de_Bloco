@@ -1,0 +1,20 @@
+def mochila_gulosa(itens, capacidade):
+    itens.sort(key=lambda x: x[1] / x[0], reverse=True)
+    valor_total = 0
+    peso_atual = 0
+    selecionados = []
+
+    for peso, valor, nome in itens:
+        if peso_atual + peso <= capacidade:
+            selecionados.append(nome)
+            valor_total += valor
+            peso_atual += peso
+
+    return selecionados, valor_total
+
+itens = [(2, 40, "item1"), (3, 50, "item2"), (5, 100, "item3"), (4, 90, "item4")]
+capacidade = 8
+resultado, valor = mochila_gulosa(itens, capacidade)
+
+print(f"Itens selecionados: {resultado}")
+print(f"Valor total: {valor}")

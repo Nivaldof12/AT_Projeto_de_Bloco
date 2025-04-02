@@ -1,0 +1,30 @@
+import heapq
+
+def prim(grafo, inicio):
+    mst = []
+    visitados = set([inicio])
+    arestas = [(peso, inicio, vizinho) for vizinho, peso in grafo[inicio]]
+    heapq.heapify(arestas)
+
+    while arestas:
+        peso, u, v = heapq.heappop(arestas)
+        if v not in visitados:
+            visitados.add(v)
+            mst.append((u, v, peso))
+            for vizinho, p in grafo[v]:
+                if vizinho not in visitados:
+                    heapq.heappush(arestas, (p, v, vizinho))
+
+    return mst
+
+grafo = {
+    'A': [('B', 2), ('C', 3)],
+    'B': [('A', 2), ('C', 1), ('D', 4)],
+    'C': [('A', 3), ('B', 1), ('D', 5)],
+    'D': [('B', 4), ('C', 5)]
+}
+
+inicio = 'A'
+resultado = prim(grafo, inicio)
+for u, v, peso in resultado:
+    print(f"{u} - {v} com peso {peso}")
